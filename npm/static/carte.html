@@ -12,7 +12,8 @@
     <script src="cluster/leaflet.markercluster-src.js"></script>
     <link rel="stylesheet" href="cluster/MarkerCluster.css" />
     <link rel="stylesheet" href="cluster/MarkerCluster.Default.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
     <title>Grosse carte</title>
 
     <style>
@@ -25,50 +26,60 @@
 
 <body>
     <h1>Bienvenue à toi jeune entrepreneur</h1>
+    <div ng-controller="app">
+        <div id="carteCovid"></div>
+        <script type="text/javascript">
 
-    <div id="carteCovid"></div>
-    <script type="text/javascript">
-
-        /*var data = JSON.parse(data);
-
-        data.forEach(element => {
-            console.log(element.adresse);
-        });*/
-
-        
-
-
-        var markersCluster = new L.markerClusterGroup();
-        var carte = L.map('carteCovid').setView([43.924523, 2.144774], 13);
-
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiYXNpcmVpeCIsImEiOiJja2t3a3Rlcjc0dGU5MnBxdDFnZnV5N29sIn0.pWyUSmtAIBwFWrbyJlZV1w'
-        }).addTo(carte);
-
-        var icontrobien = L.icon({
-            iconUrl: 'ressources/icon2.png',
-
-        });
-
-        $.getJSON("ressources/dataCenter.json", function (json) {
-            var data = json; // this will show the info it in firebug console
+            /*var data = JSON.parse(data);
+    
             data.forEach(element => {
-                if (element.latitude == null){
-                    console.log(element);
-                }
-                var marker = new L.marker([element.latitude, element.longitude], { icon: icontrobien });
-                markersCluster.addLayer(marker);
+                console.log(element.adresse);
+            });*/
+            var data = null;
+
+            var myApp = angular.module('myApp', []);
+
+            myApp.controller('app', function ($scope, $http) {
+
+                var markersCluster = new L.markerClusterGroup();
+                var carte = L.map('carteCovid').setView([43.924523, 2.144774], 13);
+
+                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/streets-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoiYXNpcmVpeCIsImEiOiJja2t3a3Rlcjc0dGU5MnBxdDFnZnV5N29sIn0.pWyUSmtAIBwFWrbyJlZV1w'
+                }).addTo(carte);
+
+                var icontrobien = L.icon({
+                    iconUrl: 'ressources/icon2.png',
+
+                });
+
+                data.forEach(element => {
+                    if (element.latitude == null) {
+                        console.log(element);
+                    }
+                    var marker = new L.marker([element.latitude, element.longitude], { icon: icontrobien });
+                    markersCluster.addLayer(marker);
+                });
+                carte.addLayer(markersCluster);
+
+                $http.get('ressources/dataCenter.json').success(function (dataCenter) {
+                    console.log("prout");
+                });
+                console.log("prout");
+
+
             });
-            carte.addLayer(markersCluster);
-        });
 
-    </script>
 
+
+
+        </script>
+    </div>
 
 
 </body>
