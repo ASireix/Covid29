@@ -12,74 +12,69 @@
     <script src="cluster/leaflet.markercluster-src.js"></script>
     <link rel="stylesheet" href="cluster/MarkerCluster.css" />
     <link rel="stylesheet" href="cluster/MarkerCluster.Default.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+    <script src="leafletui/ui-leaflet.min.js"></script>
+    <script src="angular/angular-simple-logger.js"></script>
 
-    <title>Grosse carte</title>
+
 
     <style>
-        #carteCovid {
+        #leaflet-map {
             height: 800px;
             width: 1000px;
         }
     </style>
+    <title>Grosse carte</title>
+
 </head>
 
-<body>
+<body ng-app="angularApp" ng-controller="Ctrl">
+
     <h1>Bienvenue à toi jeune entrepreneur</h1>
-    <div ng-controller="app">
-        <div id="carteCovid"></div>
-        <script type="text/javascript">
+    <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
 
-            /*var data = JSON.parse(data);
-    
-            data.forEach(element => {
-                console.log(element.adresse);
-            });*/
-            var data = null;
 
-            var myApp = angular.module('myApp', []);
+    <script type="text/javascript">
+        var app = angular.module("angularApp", ['ui-leaflet']);
 
-            myApp.controller('app', function ($scope, $http) {
+        app.factory('dataInfo', function ($http) {
+            return $http.get('ressources/dataCenter.json');
+        });
 
-                var markersCluster = new L.markerClusterGroup();
-                var carte = L.map('carteCovid').setView([43.924523, 2.144774], 13);
+        app.controller("Ctrl", ["$scope","dataInfo", function ($scope,dataInfo) {
 
-                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    maxZoom: 18,
-                    id: 'mapbox/streets-v11',
-                    tileSize: 512,
-                    zoomOffset: -1,
-                    accessToken: 'pk.eyJ1IjoiYXNpcmVpeCIsImEiOiJja2t3a3Rlcjc0dGU5MnBxdDFnZnV5N29sIn0.pWyUSmtAIBwFWrbyJlZV1w'
-                }).addTo(carte);
+            angular.extend($scope, {
+                center: {
+                    lat: 46.095,
+                    lng: 2.823,
+                    zoom: 6
+                },
+                markers: {}
 
-                var icontrobien = L.icon({
-                    iconUrl: 'ressources/icon2.png',
 
-                });
+            });
 
-                data.forEach(element => {
-                    if (element.latitude == null) {
-                        console.log(element);
+            dataInfo.then(function (response) {
+                $scope.dataCenter = response.data;
+                console.log($scope.markers);
+                for (var i=0; i<response.data.length; i++){
+                    console.log(response.data[i].latitude)
+                    console.log(response.data[i].longitude)
+                    $scope.markers[i] = {
+                        lat : response.data[i].latitude,
+                        lng : response.data[i].longitude
                     }
-                    var marker = new L.marker([element.latitude, element.longitude], { icon: icontrobien });
-                    markersCluster.addLayer(marker);
-                });
-                carte.addLayer(markersCluster);
+                }
 
-                $http.get('ressources/dataCenter.json').success(function (dataCenter) {
-                    console.log("prout");
-                });
-                console.log("prout");
-
-
+                console.log($scope.markers);
             });
 
 
 
 
-        </script>
-    </div>
+        }]);
+
+    </script>
 
 
 </body>
