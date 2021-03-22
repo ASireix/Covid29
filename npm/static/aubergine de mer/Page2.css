@@ -1,0 +1,66 @@
+#Page{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#carteCovid {
+    height: 600px;
+    width: 1000px;
+}
+
+.formulaire{
+    display: flex;
+    flex-direction: column;
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
+}
+
+#Cadres {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 15px;
+    margin: 5px;
+    height: 180px;/*à changer*/
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#Infos{
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-direction: row;
+    align-items: center;
+    margin: 1px;
+}
+
+#Infos div{
+    margin-right:  5px;;
+}
+
+[name=pseudo]{
+    width: 20ch;
+}
+
+[name=age]{
+    width: 5ch;
+}
+
+#DateLabel{
+    display: flex;
+    flex-direction: column;
+}
+
+[for=dateT]{
+    text-align: right;
+}
+
+#DateInput{
+    display: flex;
+    flex-direction: column;
+}

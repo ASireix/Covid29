@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <title>Grosse carte</title>
+    <link type="text/css" rel="stylesheet" href="Page2.css">
+</head>
+
+<body ng-app="app">
+    <h1>Bienvenue à toi jeune entrepreneur</h1>
+    <div id="Page">
+        <div id="carteCovid">
+            <script type="text/javascript">
+                var carte = L.map('carteCovid').setView([43.924523, 2.144774], 13);
+
+                L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/streets-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoiYXNpcmVpeCIsImEiOiJja2t3a3Rlcjc0dGU5MnBxdDFnZnV5N29sIn0.pWyUSmtAIBwFWrbyJlZV1w'
+                }).addTo(carte);
+
+            </script>
+        </div>
+            <form class="formulaire">
+                <div id="Cadres">
+                    <div id="Infos">
+                        <div>
+                            <label for="pseudo">Prénom :</label>
+                            <input name="pseudo" type="text" placeholder="ou Pseudo">
+                        </div>
+                        <div>
+                            <label for="age">Âge :</label>
+                            <input name="age" type="number" placeholder="20">
+                        </div>
+                        <div>
+                            <label for="sexe">Sexe :</label>
+                            <select id="sexe">
+                                <option value="autre">Autre</option>
+                                <option value="homme">Homme</option>
+                                <option value="femme">Femme</option>
+                            </select>
+                        </div>
+                        <div id="DateLabel">
+                            <label for="dateT">Test :</label>
+                            <label for="dateR">Résultat:</label>
+                        </div>
+                        <div id="DateInput">
+                            <input name="dateT" type="date">
+                            <input name="dateR" type="date">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Test effectué pour la Covid-19:</label>
+                    </div>
+                    <div id="ResulTest">
+                        <label>RP-PCR</label>
+                        <input name="type" type="radio" value=1>
+                        <label>Antigénique</label>
+                        <input name="type" type="radio" value=2>
+                        <label>Dépistage Salivaire</label>
+                        <input name="type" type="radio" value=3>
+                        <label>Sérologiques</label>
+                        <input name="type" type="radio" value=4>
+                    </div>
+                </div>
+                <div id="Cadres">
+                    <label>Temps d'attentes</label>
+                    <label>Prise en charge</label>
+                </div>
+                <div id="Cadres">
+                    <label for="commentaire">Commentaire :</label>
+                    <input name="commentaire" type="text" placeholder="Un avis, une remarque">
+                </div>
+                
+            </form>
+        
+    </div>
+
+
+</body>
+<script>
+  
+    var app = angular.module('app', []);
+    
+  
+  </script>
+
+</html>
