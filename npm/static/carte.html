@@ -34,6 +34,8 @@
     <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
 
 
+
+
     <script type="text/javascript">
         var app = angular.module("angularApp", ['ui-leaflet']);
 
@@ -74,11 +76,11 @@
                 var marqueurs = L.markerClusterGroup();
 
                 $scope.dataCenter = response.data;
-                console.log($scope.markers);
+                //console.log($scope.markers);
                 for (var i = 0; i < response.data.length; i++) {
 
-                    console.log(response.data[i].latitude);
-                    console.log(response.data[i].longitude);
+                    //console.log(response.data[i].latitude);
+                    //console.log(response.data[i].longitude);
 
                     var icontrobien = L.icon({
                         iconUrl: 'ressources/icon2.png',
@@ -87,11 +89,6 @@
 
                     var marker = new L.marker([response.data[i].latitude, response.data[i].longitude], { icon: icontrobien });
                     marqueurs.addLayer(marker);
-                    /*$scope.markers[i] = {
-                        lat: response.data[i].latitude,
-                        lng: response.data[i].longitude,
-                        icon: { url: 'ressources/icon.png' }
-                    }*/
 
 
                     leafletData.getMap("leaflet-map").then(function (map) {
