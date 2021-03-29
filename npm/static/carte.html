@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="angular-md/angular-material.css">
     <link rel="stylesheet" href="cluster/MarkerCluster.css" />
     <link rel="stylesheet" href="cluster/MarkerCluster.Default.css" />
+    <link type="text/css" rel="stylesheet" href="Page2.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
     <script src="leafletui/ui-leaflet.min.js"></script>
     <script src="angular/angular-simple-logger.js"></script>
@@ -36,30 +37,95 @@
 <body ng-app="angularApp" ng-controller="Ctrl">
 
     <h1>Bienvenue à toi jeune entrepreneur</h1>
-
-    <div layout="row">
-        <div flex="">
-            <div layout="column">
+    <div id="Page">
+        <div id="carteCovid">
+            <div layout="row">
                 <div flex="">
-                    <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
-                </div>
-                <div flex="">
-                    <md-content>
+                    <div layout="column">
+                        <div flex="">
+                            <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
+                        </div>
+                        <div flex="">
+                            <md-content>
 
-                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                            <md-button>Statistiques</md-button>
-                            <md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
-                            <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
-                        </section>
-                    </md-content>
+                                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                                    <md-button>Statistiques</md-button>
+                                    <md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
+                                    <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
+                                </section>
+                            </md-content>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
-            
         </div>
+        <form class="formulaire">
+            <div id="Cadres">
+                <div id="Infos">
+                    <div name="I1">
+                        <label for="pseudo">Prénom :</label>
+                        <input name="pseudo" type="text" placeholder="ou Pseudo">
+                    </div>
+                    <div name="I2">
+                        <label for="age">Âge :</label>
+                        <input name="age" type="number" placeholder="20">
+                    </div>
+                    <div name="I3">
+                        <label for="sexe">Sexe :</label>
+                        <select id="sexe">
+                            <option value="autre">Autre</option>
+                            <option value="homme">Homme</option>
+                            <option value="femme">Femme</option>
+                        </select>
+                    </div>
+                    <div name="I4">
+                        <div id="DateLabel">
+                            <label for="dateT">Jour du Test :</label>
+                            <label for="dateR">Jour Résultat :</label>
+                        </div>
+                        <div id="DateInput">
+                            <input name="dateT" type="date">
+                            <input name="dateR" type="date">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label>Test effectué pour la Covid-19:</label>
+                </div>
+                <div id="ResulTest">
+                    <div>
+                        <label>RP-PCR</label>
+                        <input name="type" type="radio" value=1>
+                    </div>
+                    <div>
+                        <label>Antigénique</label>
+                        <input name="type" type="radio" value=2>
+                    </div>
+                    <div>
+                        <label>Dépistage Salivaire</label>
+                        <input name="type" type="radio" value=3>
+                    </div>
+                    <div>
+                        <label>Sérologiques</label>
+                        <input name="type" type="radio" value=4>
+                    </div>
+                </div>
+            </div>
+            <div id="Cadres">
+                <label>Temps d'attentes</label>
+                <label>Prise en charge</label>
+            </div>
+            <div id="Cadres">
+                <label for="commentaire">Commentaire :</label>
+                <textarea name="commentaire" placeholder="Un avis, une remarque..."></textarea>
+            </div>
+            <div id="submit">
+                <input type="submit">
+            </div>
+        </form>
+
     </div>
-
-
-
     <script type="text/javascript">
         var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet']);
 
@@ -130,7 +196,7 @@
         }]);
 
     </script>
-
+    
 
 </body>
 
