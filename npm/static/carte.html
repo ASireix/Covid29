@@ -19,23 +19,38 @@
     <script src="angular-md/angular-material.js"></script>
     <script src="angular-an/angular-animate.js"></script>
     <script src="angular-ar/angular-aria.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
 
 
 
     <style>
+        body{
+            height: 100%;
+        }
+        .navBardemoBasicUsage md-content .ext-content {
+            padding: 50px;
+            margin: 20px;
+            background-color: #FFF2E0;
+        }
+
         #leaflet-map {
             height: 800px;
-            width: 1000px;
+            width: 900px;
+        }
+
+        .h1 {
+            text-align: center;
+            width: 100%;
         }
     </style>
     <title>Grosse carte</title>
 
 </head>
 
-<body ng-app="angularApp" ng-controller="Ctrl">
+<body ng-app="angularApp" ng-controller="Ctrl" ng-style="{'background-image':'url(ressources/background.jpg)'}">
 
-    <h1>Bienvenue à toi jeune entrepreneur</h1>
+    <h1 class="md-display-3">Bienvenue à toi jeune entrepeneur</h1>
 
     <div layout="row">
         <div flex="">
@@ -44,17 +59,48 @@
                     <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
                 </div>
                 <div flex="">
-                    <md-content>
-
-                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                            <md-button>Statistiques</md-button>
-                            <md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
-                            <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
-                        </section>
-                    </md-content>
                 </div>
             </div>
-            
+
+        </div>
+        <div flex="">
+            <md-content class="md-padding">
+                <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem"
+                    nav-bar-aria-label="navigation links">
+                    <md-nav-item md-nav-click="goto('page1')" name="page1">
+                        Statistiques
+                    </md-nav-item>
+                    <md-nav-item md-nav-click="goto('page2')" name="page2" ng-disabled="secondTabDisabled">
+                        Page Two
+                    </md-nav-item>
+                    <md-nav-item md-nav-click="goto('page3')" name="page3">
+                        Page Three
+                    </md-nav-item>
+                    <md-nav-item md-nav-click="goto('page4')" name="page4" disabled>
+                        Page Four
+                    </md-nav-item>
+                    <!-- these require actual routing with ui-router or ng-route, so they
+                  won't work in the demo
+                  <md-nav-item md-nav-href="#page4" name="page5">Page Four</md-nav-item>
+                  <md-nav-item md-nav-sref="app.page5" name="page4">Page Five</md-nav-item>
+                  You can also add options for the <code>ui-sref-opts</code> attribute.
+                  <md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">
+                    Page Six
+                  </md-nav-item>
+                  -->
+                </md-nav-bar>
+                <span>{{status}}</span>
+                <div class="ext-content">
+                    External content for `<span>{{currentNavItem}}</span>`.
+                </div>
+
+                <md-checkbox ng-model="disableInkBar">Disable Ink Bar</md-checkbox>
+
+                <md-checkbox ng-model="secondTabDisabled" aria-label="Disable Second Tab" style="margin: 5px;">
+                    Disable Second Tab
+                </md-checkbox>
+
+            </md-content>
         </div>
     </div>
 
@@ -82,7 +128,7 @@
             });
         }
 
-        app.controller("Ctrl", ["$scope", "dataInfo", "leafletData", function ($scope, dataInfo, leafletData) {
+        app.controller("Ctrl", ["$scope", "$compile", "dataInfo", "leafletData", function ($scope, $compile, dataInfo, leafletData) {
 
             angular.extend($scope, {
                 center: {
@@ -110,8 +156,20 @@
                         iconUrl: 'ressources/icon2.png',
 
                     });
+                    var html = '<div>' +
+                        '<h1>' + response.data[i].rs + '</h1>' +
+                        '<h3>' + response.data[i].adresse + '</h3>' +
+                        '<md-button class="md-raised md-primary"> Voter contre les juifs en 2021</md-button>' +
+                        '</div>',
+
+                        linkFunction = $compile(angular.element(html)),
+                        newScope = $scope.$new();
 
                     var marker = new L.marker([response.data[i].latitude, response.data[i].longitude], { icon: icontrobien });
+                    let popup = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[0]);
+                    //let popup1 = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[1]);
+                    marker.bindPopup(popup);
+                    //marker.bindPopup(popup1);
                     marqueurs.addLayer(marker);
 
 
