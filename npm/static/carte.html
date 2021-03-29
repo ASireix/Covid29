@@ -1,58 +1,44 @@
-f<!DOCTYPE html>
-    <html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-            crossorigin="" />
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-            crossorigin=""></script>
-        <script src="cluster/leaflet.markercluster-src.js"></script>
-        <link rel="stylesheet" href="angular-md/angular-material.css">
-        <link rel="stylesheet" href="cluster/MarkerCluster.css" />
-        <link rel="stylesheet" href="cluster/MarkerCluster.Default.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
-        <script src="leafletui/ui-leaflet.min.js"></script>
-        <script src="angular/angular-simple-logger.js"></script>
-        <script src="angular-md/angular-material.js"></script>
-        <script src="angular-an/angular-animate.js"></script>
-        <script src="angular-ar/angular-aria.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
-
-
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script src="cluster/leaflet.markercluster-src.js"></script>
+    <link rel="stylesheet" href="angular-md/angular-material.css">
+    <link rel="stylesheet" href="cluster/MarkerCluster.css" />
+    <link rel="stylesheet" href="cluster/MarkerCluster.Default.css" />
+    <link type="text/css" rel="stylesheet" href="Page2.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+    <script src="leafletui/ui-leaflet.min.js"></script>
+    <script src="angular/angular-simple-logger.js"></script>
+    <script src="angular-md/angular-material.js"></script>
+    <script src="angular-an/angular-animate.js"></script>
+    <script src="angular-ar/angular-aria.js"></script>
 
 
-        <style>
-            body {
-                height: 100%;
-            }
 
-            .navBardemoBasicUsage md-content .ext-content {
-                padding: 50px;
-                margin: 20px;
-                background-color: #FFF2E0;
-            }
 
-            #leaflet-map {
-                height: 800px;
-                width: 900px;
-            }
+    <style>
+        #leaflet-map {
+            height: 800px;
+            width: 1000px;
+        }
+    </style>
+    <title>Grosse carte</title>
 
-            .h1 {
-                text-align: center;
-                width: 100%;
-            }
-        </style>
-        <title>Grosse carte</title>
+</head>
 
-    </head>
+<body ng-app="angularApp">
 
-    <body ng-app="angularApp" ng-controller="Ctrl" ng-style="{'background-image':'url(ressources/background.jpg)'}">
-
-        <h1 class="md-display-3">Bienvenue à toi jeune entrepeneur</h1>
-        <div id="Page">
+    <h1>Bienvenue à toi jeune entrepreneur</h1>
+    <div id="Page">
+        <div id="carteCovid" ng-controller="Ctrl">
             <div layout="row">
                 <div flex="">
                     <div layout="column">
@@ -60,165 +46,202 @@ f<!DOCTYPE html>
                             <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
                         </div>
                         <div flex="">
+                            <md-content>
+
+                                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                                    <md-button>Statistiques</md-button>
+                                    <md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
+                                    <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
+                                </section>
+                            </md-content>
                         </div>
                     </div>
-
-                </div>
-                <div flex="">
-                    <form class="formulaire">
-                        <div id="Cadres">
-                            <div id="Infos">
-                                <div name="I1">
-                                    <label for="pseudo">Prénom :</label>
-                                    <input name="pseudo" type="text" placeholder="ou Pseudo">
-                                </div>
-                                <div name="I2">
-                                    <label for="age">Âge :</label>
-                                    <input name="age" type="number" placeholder="20">
-                                </div>
-                                <div name="I3">
-                                    <label for="sexe">Sexe :</label>
-                                    <select id="sexe">
-                                        <option value="autre">Autre</option>
-                                        <option value="homme">Homme</option>
-                                        <option value="femme">Femme</option>
-                                    </select>
-                                </div>
-                                <div name="I4">
-                                    <div id="DateLabel">
-                                        <label for="dateT">Jour du Test :</label>
-                                        <label for="dateR">Jour Résultat :</label>
-                                    </div>
-                                    <div id="DateInput">
-                                        <input name="dateT" type="date">
-                                        <input name="dateR" type="date">
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <label>Test effectué pour la Covid-19:</label>
-                            </div>
-                            <div id="ResulTest">
-                                <div>
-                                    <label>RP-PCR</label>
-                                    <input name="type" type="radio" value=1>
-                                </div>
-                                <div>
-                                    <label>Antigénique</label>
-                                    <input name="type" type="radio" value=2>
-                                </div>
-                                <div>
-                                    <label>Dépistage Salivaire</label>
-                                    <input name="type" type="radio" value=3>
-                                </div>
-                                <div>
-                                    <label>Sérologiques</label>
-                                    <input name="type" type="radio" value=4>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="Cadres">
-                            <label>Temps d'attentes</label>
-                            <label>Prise en charge</label>
-                        </div>
-                        <div id="Cadres">
-                            <label for="commentaire">Commentaire :</label>
-                            <textarea name="commentaire" placeholder="Un avis, une remarque..."></textarea>
-                        </div>
-                        <div id="submit">
-                            <input type="submit">
-                        </div>
-                    </form>
+                    
                 </div>
             </div>
-
-
         </div>
+        <form id="formulaire" class="css-form" ng-controller="Formulaire">
+            <div id="Cadres">
+                <div id="Infos">
+                    <div name="I1">
+                        <label for="pseudo">Prénom :</label>
+                        <input name="pseudo" type="text" placeholder="ou Pseudo" ng-model="user.prenom">
+                    </div>
+                    <div name="I2">
+                        <label for="age">Âge :</label>
+                        <input name="age" type="number" placeholder="20" ng-model="user.age" required>
+                    </div>
+                    <div name="I3">
+                        <label for="sexe">Sexe :</label>
+                        <select id="sexe" ng-model="user.sexe">
+                            <option value="autre">Autre</option>
+                            <option value="homme">Homme</option>
+                            <option value="femme">Femme</option>
+                        </select>
+                    </div>
+                    <div name="I4">
+                        <div id="DateLabel">
+                            <label for="dateT">Jour du Test :</label>
+                            <label for="dateR">Jour Résultat :</label>
+                        </div>
+                        <div id="DateInput">
+                            <input name="dateT" type="date" ng-model="user.dateT" required>
+                            <input name="dateR" type="date" ng-model="user.dateT">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label>Test effectué pour la Covid-19:</label>
+                </div>
+                <div id="ResulTest">
+                    <div>
+                        <label>RP-PCR</label>
+                        <input name="type" type="radio" ng-model="user.resulTest" value=1 required>
+                    </div>
+                    <div>
+                        <label>Antigénique</label>
+                        <input name="type" type="radio" ng-model="user.resulTest" value=2>
+                    </div>
+                    <div>
+                        <label>Dépistage Salivaire</label>
+                        <input name="type" type="radio" ng-model="user.resulTest" value=3>
+                    </div>
+                    <div>
+                        <label>Sérologiques</label>
+                        <input name="type" type="radio" ng-model="user.resulTest" value=4>
+                    </div>
+                </div>
+            </div>
+            <div id="Cadres">
+                <div name="attente">
+                    <label>Temps d'attentes :</label>
+                    <div class="rating">
+                    
+                        <input id="a1" type="radio" name="attenteR" ng-model="user.attente" value="1" required> 
+                        <label for="a1">1 star</label>
+                        <input id="a2" type="radio" name="attenteR" ng-model="user.attente" value="2">
+                        <label for="a2">2 stars</label>
+                        <input id="a3" type="radio" name="attenteR" ng-model="user.attente" value="3">
+                        <label for="a3">3 stars</label>
+                        <input id="a4" type="radio" name="attenteR" ng-model="user.attente" value="4">
+                        <label for="a4">4 stars</label>
+                        <input id="a5" type="radio" name="attenteR" ng-model="user.attente" value="5">
+                        <label for="a5">5 stars</label>
+                        
+                        <div class="stars">
+                            <label for="a1" aria-label="1 star" title="1 star"></label>
+                            <label for="a2" aria-label="2 stars" title="2 stars"></label>
+                            <label for="a3" aria-label="3 stars" title="3 stars"></label>
+                            <label for="a4" aria-label="4 stars" title="4 stars"></label>
+                            <label for="a5" aria-label="5 stars" title="5 stars"></label>   
+                        </div>
+                    </div>        
+                </div>
+                <div name="prisecharge">
+                    <label>Prise en charge :</label>
+                    <div class="rating">
+                    
+                        <input id="pc1" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="1" required> 
+                        <label for="pc1">1 star</label>
+                        <input id="pc2" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="2">
+                        <label for="pc2">2 stars</label>
+                        <input id="pc3" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="3">
+                        <label for="pc3">3 stars</label>
+                        <input id="pc4" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="4">
+                        <label for="pc4">4 stars</label>
+                        <input id="pc5" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="5">
+                        <label for="pc5">5 stars</label>
+                        
+                        <div class="stars">
+                            <label for="pc1" aria-label="1 star" title="1 star"></label>
+                            <label for="pc2" aria-label="2 stars" title="2 stars"></label>
+                            <label for="pc3" aria-label="3 stars" title="3 stars"></label>
+                            <label for="pc4" aria-label="4 stars" title="4 stars"></label>
+                            <label for="pc5" aria-label="5 stars" title="5 stars"></label>   
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div id="Cadres">
+                <label for="commentaire">Commentaire :</label>
+                <textarea name="commentaire" placeholder="Un avis, une remarque..." ng-model="user.commentaire"></textarea>
+            </div>
+            <div id="submit">
+                <input type="submit" ng-click="update(user)">
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet']);
 
+        app.factory('dataInfo', function ($http) {
+            return $http.get('ressources/dataCenter.json');
+        });
 
+        function addayerWithClustering(data) {
 
-        <script type="text/javascript">
-            var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet']);
-
-            app.factory('dataInfo', function ($http) {
-                return $http.get('ressources/dataCenter.json');
+            var geoJsonLayer = L.geoJson(data, {
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(feature.properties.name);
+                }
             });
 
-            function addayerWithClustering(data) {
+            markers.addLayer(geoJsonLayer);
+            leafletData.getMap().then(function (map) {
+                map.addLayer(markers);
+                //map.fitBounds(markers.getBounds());
+            });
+        }
 
-                var geoJsonLayer = L.geoJson(data, {
-                    onEachFeature: function (feature, layer) {
-                        layer.bindPopup(feature.properties.name);
-                    }
-                });
+        app.controller("Ctrl", ["$scope", "dataInfo", "leafletData", function ($scope, dataInfo, leafletData) {
 
-                markers.addLayer(geoJsonLayer);
-                leafletData.getMap().then(function (map) {
-                    map.addLayer(markers);
-                    //map.fitBounds(markers.getBounds());
-                });
-            }
+            angular.extend($scope, {
+                center: {
+                    lat: 46.095,
+                    lng: 2.823,
+                    zoom: 6
+                },
+                markers: {}
 
-            app.controller("Ctrl", ["$scope", "$compile", "dataInfo", "leafletData", function ($scope, $compile, dataInfo, leafletData) {
+            });
 
-                angular.extend($scope, {
-                    center: {
-                        lat: 46.095,
-                        lng: 2.823,
-                        zoom: 6
-                    },
-                    markers: {}
+            dataInfo.then(function (response) {
 
+                var marqueurs = L.markerClusterGroup();
 
-                });
+                $scope.dataCenter = response.data;
+                //console.log($scope.markers);
+                for (var i = 0; i < response.data.length; i++) {
 
-                dataInfo.then(function (response) {
+                    //console.log(response.data[i].latitude);
+                    //console.log(response.data[i].longitude);
 
-                    var marqueurs = L.markerClusterGroup();
+                    var icontrobien = L.icon({
+                        iconUrl: 'ressources/icon2.png',
 
-                    $scope.dataCenter = response.data;
-                    //console.log($scope.markers);
-                    for (var i = 0; i < response.data.length; i++) {
+                    });
 
-                        //console.log(response.data[i].latitude);
-                        //console.log(response.data[i].longitude);
-
-                        var icontrobien = L.icon({
-                            iconUrl: 'ressources/icon2.png',
-
-                        });
-                        var html = '<div>' +
-                            '<h1>' + response.data[i].rs + '</h1>' +
-                            '<h3>' + response.data[i].adresse + '</h3>' +
-                            '<md-button class="md-raised md-primary"> Voter contre les juifs en 2021</md-button>' +
-                            '</div>',
-
-                            linkFunction = $compile(angular.element(html)),
-                            newScope = $scope.$new();
-
-                        var marker = new L.marker([response.data[i].latitude, response.data[i].longitude], { icon: icontrobien });
-                        let popup = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[0]);
-                        //let popup1 = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[1]);
-                        marker.bindPopup(popup);
-                        //marker.bindPopup(popup1);
-                        marqueurs.addLayer(marker);
+                    var marker = new L.marker([response.data[i].latitude, response.data[i].longitude], { icon: icontrobien });
+                    marqueurs.addLayer(marker);
 
 
-                        leafletData.getMap("leaflet-map").then(function (map) {
-                            map.addLayer(marqueurs);
-                            //map.fitBounds(markers.getBounds());
-                        });
+                    leafletData.getMap("leaflet-map").then(function (map) {
+                        map.addLayer(marqueurs);
+                        //map.fitBounds(markers.getBounds());
+                    });
 
-                    }
+                }
 
-                })
+            })
 
+            
 
+        }]);
 
+    </script>
+    
 
-            }]);
+</body>
 
-        </script>
-
-
-    </body>
+</html>
