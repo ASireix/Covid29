@@ -10,11 +10,16 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
     <script src="cluster/leaflet.markercluster-src.js"></script>
+    <link rel="stylesheet" href="angular-md/angular-material.css">
     <link rel="stylesheet" href="cluster/MarkerCluster.css" />
     <link rel="stylesheet" href="cluster/MarkerCluster.Default.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
     <script src="leafletui/ui-leaflet.min.js"></script>
     <script src="angular/angular-simple-logger.js"></script>
+    <script src="angular-md/angular-material.js"></script>
+    <script src="angular-an/angular-animate.js"></script>
+    <script src="angular-ar/angular-aria.js"></script>
+
 
 
 
@@ -31,13 +36,32 @@
 <body ng-app="angularApp" ng-controller="Ctrl">
 
     <h1>Bienvenue à toi jeune entrepreneur</h1>
-    <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
 
+    <div layout="row">
+        <div flex="">
+            <div layout="column">
+                <div flex="">
+                    <leaflet id="leaflet-map" markers="markers" center="center"></leaflet>
+                </div>
+                <div flex="">
+                    <md-content>
+
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                            <md-button>Statistiques</md-button>
+                            <md-button md-no-ink class="md-primary">Primary (md-noink)</md-button>
+                            <md-button ng-disabled="true" class="md-primary">Disabled</md-button>
+                        </section>
+                    </md-content>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 
 
 
     <script type="text/javascript">
-        var app = angular.module("angularApp", ['ui-leaflet']);
+        var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet']);
 
         app.factory('dataInfo', function ($http) {
             return $http.get('ressources/dataCenter.json');
@@ -103,7 +127,7 @@
 
 
 
-            }]);
+        }]);
 
     </script>
 
