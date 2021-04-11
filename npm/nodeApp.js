@@ -9,6 +9,7 @@ app.use('/angular', express.static('node_modules/angular-simple-logger/dist'))
 app.use('/angular-md', express.static('node_modules/angular-material'))
 app.use('/angular-an', express.static('node_modules/angular-animate'))
 app.use('/angular-ar', express.static('node_modules/angular-aria'))
+app.use('/angular-sa', express.static('node_modules/angular-sanitize'))
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/static/carte.html');
