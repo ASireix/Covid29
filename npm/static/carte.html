@@ -20,7 +20,6 @@
     <script src="angular-an/angular-animate.js"></script>
     <script src="angular-ar/angular-aria.js"></script>
     <script src="angular-sa/angular-sanitize.js"></script>
-    <script src="angular-ro/angular-ui-router.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
 
@@ -71,7 +70,7 @@
             margin: 20px;
         }
 
-        .big-content {
+        .big-content{
             margin-bottom: 20px;
         }
     </style>
@@ -79,7 +78,7 @@
 
 </head>
 
-<body ng-app="angularApp" ng-controller="ctrl" ng-style="{'background-image':'url(ressources/background.jpg)'}">
+<body ng-app="angularApp" ng-controller="Ctrl" ng-style="{'background-image':'url(ressources/background.jpg)'}">
 
 
     <div layout="column">
@@ -102,27 +101,27 @@
                 <div class="rightInfo" flex="">
 
                     <md-content class="md-padding">
-                        <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentItem"
+                        <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem"
                             nav-bar-aria-label="navigation links">
-                            <md-nav-item md-nav-sref="aide" name="aide">
+                            <md-nav-item md-nav-click="goto('aide')" name="aide">
                                 Info et aide
                             </md-nav-item>
-                            <md-nav-item md-nav-sref="formule" name="form">
+                            <md-nav-item md-nav-click="goto('form')" name="form">
                                 Formulaire
                             </md-nav-item>
-                            <md-nav-item md-nav-sref="stat" name="stat">
+                            <md-nav-item md-nav-click="goto('stat')" name="stat">
                                 Statistique
                             </md-nav-item>
-                            <md-nav-item md-nav-sref="mention" name="mention">
+                            <md-nav-item md-nav-click="goto('leg')" name="leg">
                                 Mentions légales
                             </md-nav-item>
 
                         </md-nav-bar>
+                        
+                        <div class="ext-content" ng-bind-html=currentExt>
+                            
+                        </div>
 
-                        <!--<div class="ext-content" ng-bind-html=currentExt>
-
-                        </div>!-->
-                        <ui-view></ui-view>
                     </md-content>
                 </div>
             </div>
@@ -132,9 +131,7 @@
 
 
     <script type="text/javascript">
-        var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet', 'ngSanitize', 'ui.router']);
-
-      
+        var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet','ngSanitize']);
 
         app.factory('dataInfo', function ($http) {
             return $http.get('ressources/dataCenter.json');
@@ -155,7 +152,7 @@
             });
         }
 
-        app.controller("ctrl", ["$scope", "$compile", "$state", "dataInfo", "leafletData", function ($scope, $compile, $state, dataInfo, leafletData) {
+        app.controller("Ctrl", ["$scope", "$compile", "dataInfo", "leafletData", function ($scope, $compile, dataInfo, leafletData) {
 
             angular.extend($scope, {
                 center: {
@@ -168,14 +165,24 @@
 
             });
 
-            $state.go('aide');
-
-            $scope.currentItem = 'aide';
-
-            $scope.clicked = function(){
-                $state.go('form');
-                $scope.currentItem = 'form';
-                console.log($scope.currentItem);
+            $scope.currentExt = 'page1516545640';
+            var aideETInfo = "<p>Bienvenue sur la meilleur application web EU in the WORLD</p>"+
+                             "<p>Veuillez lire les explications sur son fonctionnement afin de ne pas vous perdre dans ce méandre d'information</p>";
+            $scope.goto = function (page) {
+                switch (page) {
+                    case 'aide':
+                        $scope.currentExt = aideETInfo;
+                        break;
+                    case 'form':
+                        $scope.currentExt = 'coucou titi';
+                        break;
+                    case 'stat':
+                        $scope.currentExt = 'spesdepdpdpdpd';
+                        break;
+                    case 'leg':
+                        $scope.currentExt = 'floorgang';
+                        break;
+                }
             }
 
             dataInfo.then(function (response) {
@@ -196,7 +203,7 @@
                     var html = '<div>' +
                         '<h1>' + response.data[i].rs + '</h1>' +
                         '<h3>' + response.data[i].adresse + '</h3>' +
-                        '<md-button class="md-raised md-primary" ng-click="clicked()"> Voter contre les juifs en 2021</md-button>' +
+                        "<md-button class='md-raised md-primary'> Voter contre les juifs en 2021</md-button>" +
                         '</div>',
 
                         linkFunction = $compile(angular.element(html)),
@@ -223,41 +230,6 @@
 
 
         }]);
-
-        app.config(function ($stateProvider) {
-
-            var formuleState = {
-                name: 'formule',
-                url: '/form',
-                templateUrl: 'ressources/form.html'
-            }
-
-            var statState = {
-                name: 'stat',
-                url: '/stat',
-                template: '<p>Hello statistique</p>'
-            }
-
-            var mentionState = {
-                name: 'mention',
-                url: '/mention',
-                template: '<p>Hello mention</p>'
-            }
-
-            var aideState = {
-                name: 'aide',
-                url: '/aide',
-                template: '<p>Hello aide</p>'
-            }
-
-
-
-            $stateProvider.state(formuleState);
-            $stateProvider.state(statState);
-            $stateProvider.state(mentionState);
-            $stateProvider.state(aideState);
-
-        });
 
     </script>
 
