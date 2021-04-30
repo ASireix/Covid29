@@ -12,22 +12,11 @@
 #formulaire{
     display: flex;
     flex-direction: column;
-    border-width: 2px;
-    border-color: black;
-    border-style: solid;
+
 }
 
 #Cadres {
-    border-width: 1px;
-    border-color: black;
-    border-style: solid;
-    border-radius: 15px;
-    margin: 5px;
-    height: 180px;/*à changer*/
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+
 }
 
 #Infos{

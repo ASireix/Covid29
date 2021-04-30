@@ -1,115 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
 
-        <link type="text/css" rel="stylesheet" href="ressources/Page2.css">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="ressources/Page2.css">
+    <script src="angular-md/angular-material.js"></script>
+    <script src="angular-sa/angular-sanitize.js"></script>
+    <title>Document</title>
+</head>
 
-        <div ng-controller="ExampleController">
-        <form id="formulaire" class="css-form" ng-controller="Formulaire">
-            <div id="Cadres">
-                <div id="Infos">
-                    <div name="I1">
-                        <label for="pseudo">Prénom :</label>
-                        <input name="pseudo" type="text" placeholder="ou Pseudo" ng-model="user.prenom">
-                    </div>
-                    <div name="I2">
-                        <label for="age">Âge :</label>
-                        <input name="age" type="number" placeholder="20" ng-model="user.age" required>
-                    </div>
-                    <div name="I3">
-                        <label for="sexe">Sexe :</label>
-                        <select id="sexe" ng-model="user.sexe">
-                            <option value="autre">Autre</option>
-                            <option value="homme">Homme</option>
-                            <option value="femme">Femme</option>
-                        </select>
-                    </div>
-                    <div name="I4">
-                        <div id="DateLabel">
-                            <label for="dateT">Jour du Test :</label>
-                            <label for="dateR">Jour Résultat :</label>
+<body ng-app="angularApp" ng-controller="formCtrl">
+
+    <md-content layout-padding>
+        <div>
+            <form id="formulaire" class="css-form">
+                <div id="Cadres">
+                    <div id="Infos">
+                        <div name="I1">
+                            <md-input-container>
+                                <label for="pseudo">Prénom :</label>
+                                <input name="pseudo" type="text" placeholder="ou Pseudo" ng-model="user.prenom">
+                            </md-input-container>
                         </div>
-                        <div id="DateInput">
-                            <input name="dateT" type="date" ng-model="user.dateT" required>
-                            <input name="dateR" type="date" ng-model="user.dateT">
+                        <div name="I2">
+                            <label for="age">Âge :</label>
+                            <input name="age" type="number" placeholder="20" ng-model="user.age" required>
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <label>Test effectué pour la Covid-19:</label>
-                </div>
-                <div id="ResulTest">
-                    <div>
-                        <label>RP-PCR</label>
-                        <input name="type" type="radio" ng-model="user.resulTest" value=1 required>
+                        <div name="I3">
+                            <label for="sexe">Sexe :</label>
+                            <select id="sexe" ng-model="user.sexe">
+                                <option value="autre">Autre</option>
+                                <option value="homme">Homme</option>
+                                <option value="femme">Femme</option>
+                            </select>
+                        </div>
+                        <div name="I4">
+                            <div id="DateLabel">
+                                <label for="dateT">Jour du Test :</label>
+                                <label for="dateR">Jour Résultat :</label>
+                            </div>
+                            <div id="DateInput">
+                                <input name="dateT" type="date" ng-model="user.dateT" required>
+                                <input name="dateR" type="date" ng-model="user.dateT">
+                            </div>
+                        </div>
                     </div>
                     <div>
-                        <label>Antigénique</label>
-                        <input name="type" type="radio" ng-model="user.resulTest" value=2>
+                        <label>Test effectué pour la Covid-19:</label>
                     </div>
-                    <div>
-                        <label>Dépistage Salivaire</label>
-                        <input name="type" type="radio" ng-model="user.resulTest" value=3>
-                    </div>
-                    <div>
-                        <label>Sérologiques</label>
-                        <input name="type" type="radio" ng-model="user.resulTest" value=4>
-                    </div>
-                </div>
-            </div>
-            <div id="Cadres">
-                <div name="attente">
-                    <label>Temps d'attentes :</label>
-                    <div class="rating">
-                    
-                        <input id="a1" type="radio" name="attenteR" ng-model="user.attente" value="1" required> 
-                        <label for="a1">1 star</label>
-                        <input id="a2" type="radio" name="attenteR" ng-model="user.attente" value="2">
-                        <label for="a2">2 stars</label>
-                        <input id="a3" type="radio" name="attenteR" ng-model="user.attente" value="3">
-                        <label for="a3">3 stars</label>
-                        <input id="a4" type="radio" name="attenteR" ng-model="user.attente" value="4">
-                        <label for="a4">4 stars</label>
-                        <input id="a5" type="radio" name="attenteR" ng-model="user.attente" value="5">
-                        <label for="a5">5 stars</label>
-                        
-                        <div class="stars">
-                            <label for="a1" aria-label="1 star" title="1 star"></label>
-                            <label for="a2" aria-label="2 stars" title="2 stars"></label>
-                            <label for="a3" aria-label="3 stars" title="3 stars"></label>
-                            <label for="a4" aria-label="4 stars" title="4 stars"></label>
-                            <label for="a5" aria-label="5 stars" title="5 stars"></label>   
+                    <div id="ResulTest">
+                        <div>
+                            <label>RP-PCR</label>
+                            <input name="type" type="radio" ng-model="user.resulTest" value=1 required>
                         </div>
-                    </div>        
-                </div>
-                <div name="prisecharge">
-                    <label>Prise en charge :</label>
-                    <div class="rating">
-                    
-                        <input id="pc1" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="1" required> 
-                        <label for="pc1">1 star</label>
-                        <input id="pc2" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="2">
-                        <label for="pc2">2 stars</label>
-                        <input id="pc3" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="3">
-                        <label for="pc3">3 stars</label>
-                        <input id="pc4" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="4">
-                        <label for="pc4">4 stars</label>
-                        <input id="pc5" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="5">
-                        <label for="pc5">5 stars</label>
-                        
-                        <div class="stars">
-                            <label for="pc1" aria-label="1 star" title="1 star"></label>
-                            <label for="pc2" aria-label="2 stars" title="2 stars"></label>
-                            <label for="pc3" aria-label="3 stars" title="3 stars"></label>
-                            <label for="pc4" aria-label="4 stars" title="4 stars"></label>
-                            <label for="pc5" aria-label="5 stars" title="5 stars"></label>   
+                        <div>
+                            <label>Antigénique</label>
+                            <input name="type" type="radio" ng-model="user.resulTest" value=2>
                         </div>
-                        
+                        <div>
+                            <label>Dépistage Salivaire</label>
+                            <input name="type" type="radio" ng-model="user.resulTest" value=3>
+                        </div>
+                        <div>
+                            <label>Sérologiques</label>
+                            <input name="type" type="radio" ng-model="user.resulTest" value=4>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="Cadres">
-                <label for="commentaire">Commentaire :</label>
-                <textarea name="commentaire" placeholder="Un avis, une remarque..." ng-model="user.commentaire"></textarea>
-            </div>
-            <div id="submit">
-                <input type="submit" ng-click="update(user)">
-            </div>
-        </form>
+                <div id="Cadres">
+                    <div name="attente">
+                        <label>Temps d'attentes :</label>
+                        <div class="rating">
+
+                            <input id="a1" type="radio" name="attenteR" ng-model="user.attente" value="1" required>
+                            <label for="a1">1 star</label>
+                            <input id="a2" type="radio" name="attenteR" ng-model="user.attente" value="2">
+                            <label for="a2">2 stars</label>
+                            <input id="a3" type="radio" name="attenteR" ng-model="user.attente" value="3">
+                            <label for="a3">3 stars</label>
+                            <input id="a4" type="radio" name="attenteR" ng-model="user.attente" value="4">
+                            <label for="a4">4 stars</label>
+                            <input id="a5" type="radio" name="attenteR" ng-model="user.attente" value="5">
+                            <label for="a5">5 stars</label>
+
+                            <div class="stars">
+                                <label for="a1" aria-label="1 star" title="1 star"></label>
+                                <label for="a2" aria-label="2 stars" title="2 stars"></label>
+                                <label for="a3" aria-label="3 stars" title="3 stars"></label>
+                                <label for="a4" aria-label="4 stars" title="4 stars"></label>
+                                <label for="a5" aria-label="5 stars" title="5 stars"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div name="prisecharge">
+                        <label>Prise en charge :</label>
+                        <div class="rating">
+
+                            <input id="pc1" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="1"
+                                required>
+                            <label for="pc1">1 star</label>
+                            <input id="pc2" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="2">
+                            <label for="pc2">2 stars</label>
+                            <input id="pc3" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="3">
+                            <label for="pc3">3 stars</label>
+                            <input id="pc4" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="4">
+                            <label for="pc4">4 stars</label>
+                            <input id="pc5" type="radio" name="prisechargeR" ng-model="user.prisecharge" value="5">
+                            <label for="pc5">5 stars</label>
+
+                            <div class="stars">
+                                <label for="pc1" aria-label="1 star" title="1 star"></label>
+                                <label for="pc2" aria-label="2 stars" title="2 stars"></label>
+                                <label for="pc3" aria-label="3 stars" title="3 stars"></label>
+                                <label for="pc4" aria-label="4 stars" title="4 stars"></label>
+                                <label for="pc5" aria-label="5 stars" title="5 stars"></label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="Cadres">
+                    <label for="commentaire">Commentaire :</label>
+                    <textarea name="commentaire" placeholder="Un avis, une remarque..."
+                        ng-model="user.commentaire"></textarea>
+                </div>
+                <div id="submit">
+                    <input type="submit" ng-click="test()">
+                </div>
+            </form>
+        </div>
+    </md-content>
+
+
+</body>
+
+</html>

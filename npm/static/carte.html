@@ -173,7 +173,7 @@
             $scope.currentItem = 'aide';
 
             $scope.clicked = function(){
-                $state.go('form');
+                $state.go('formule');
                 $scope.currentItem = 'form';
                 console.log($scope.currentItem);
             }
@@ -219,9 +219,19 @@
 
             })
 
+            console.log("papapara");
 
 
 
+
+        }]);
+
+        app.controller("formCtrl", ["$scope","$http", function($scope,$http){
+            console.log("coucou");
+
+            $scope.test=function(){
+                console.log("testsetreusi");
+            }
         }]);
 
         app.config(function ($stateProvider) {
@@ -229,7 +239,8 @@
             var formuleState = {
                 name: 'formule',
                 url: '/form',
-                templateUrl: 'ressources/form.html'
+                templateUrl: 'ressources/form.html',
+                controller: 'formCtrl'
             }
 
             var statState = {
