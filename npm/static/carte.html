@@ -134,10 +134,28 @@
     <script type="text/javascript">
         var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet', 'ngSanitize', 'ui.router']);
 
-      
+
 
         app.factory('dataInfo', function ($http) {
             return $http.get('ressources/dataCenter.json');
+        });
+
+        app.factory('reviewInfo', function ($http) {
+            return $http.get('ressources/review.json')
+        });
+
+        app.factory('formUp', function () {
+            var factory = {};
+            var id = "inconnu";
+            factory.setSite = function (site) {
+                id = site;
+            }
+
+            factory.getSite = function () {
+                return id;
+            }
+            return factory;
+
         });
 
         function addayerWithClustering(data) {
@@ -155,7 +173,7 @@
             });
         }
 
-        app.controller("ctrl", ["$scope", "$compile", "$state", "dataInfo", "leafletData", function ($scope, $compile, $state, dataInfo, leafletData) {
+        app.controller("ctrl", ["$scope", "$compile", "$state", "dataInfo", "leafletData", "formUp", function ($scope, $compile, $state, dataInfo, leafletData, formUp) {
 
             angular.extend($scope, {
                 center: {
@@ -168,14 +186,29 @@
 
             });
 
+            $scope.dataCenter = [];
+
             $state.go('aide');
 
             $scope.currentItem = 'aide';
+            $scope.currentSelectedSite = null;
 
-            $scope.clicked = function(){
+            $scope.handleClick = function (data) {
+                $scope.clicked();
+                $scope.formUpdate(data);
+            }
+
+            $scope.clicked = function (lieu) {
                 $state.go('formule');
                 $scope.currentItem = 'form';
                 console.log($scope.currentItem);
+            }
+
+            $scope.formUpdate = function (data) {
+                console.log($scope.dataCenter[data].rs);
+                formUp.setSite($scope.dataCenter[data].id);
+                $scope.currentSelectedSite = $scope.dataCenter[data].rs;
+                console.log(formUp.getSite());
             }
 
             dataInfo.then(function (response) {
@@ -183,41 +216,46 @@
                 var marqueurs = L.markerClusterGroup();
 
                 $scope.dataCenter = response.data;
-                //console.log($scope.markers);
+
+
+                var icontrobien = L.icon({
+                    iconUrl: 'ressources/icon2.png',
+
+                });
+                console.log("longjrnjgk "+response.data.length)
                 for (var i = 0; i < response.data.length; i++) {
 
                     //console.log(response.data[i].latitude);
                     //console.log(response.data[i].longitude);
+                    if (response.data[i].latitude != null) {
+                        var html = '<div>' +
+                            '<h1>' + response.data[i].rs + '</h1>' +
+                            '<h3>' + response.data[i].adresse + '</h3>' +
+                            '<md-button class="md-raised md-primary" ng-click="handleClick(' + i + ')"> Voter contre les juifs en 2021</md-button>' +
+                            '</div>',
 
-                    var icontrobien = L.icon({
-                        iconUrl: 'ressources/icon2.png',
+                            linkFunction = $compile(angular.element(html)),
+                            newScope = $scope.$new();
 
-                    });
-                    var html = '<div>' +
-                        '<h1>' + response.data[i].rs + '</h1>' +
-                        '<h3>' + response.data[i].adresse + '</h3>' +
-                        '<md-button class="md-raised md-primary" ng-click="clicked()"> Voter contre les juifs en 2021</md-button>' +
-                        '</div>',
+                        var marker = new L.marker([response.data[i].latitude, response.data[i].longitude], { icon: icontrobien });
+                        let popup = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[0]);
+                        marker.bindPopup(popup);
+                        marqueurs.addLayer(marker);
 
-                        linkFunction = $compile(angular.element(html)),
-                        newScope = $scope.$new();
+                        leafletData.getMap("leaflet-map").then(function (map) {
+                            map.addLayer(marqueurs);
 
-                    var marker = new L.marker([response.data[i].latitude, response.data[i].longitude], { icon: icontrobien });
-                    let popup = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[0]);
-                    //let popup1 = L.popup({ autoClose: true, keepInView: true }).setContent(linkFunction(newScope)[1]);
-                    marker.bindPopup(popup);
-                    //marker.bindPopup(popup1);
-                    marqueurs.addLayer(marker);
+                        });
+                    }
 
 
-                    leafletData.getMap("leaflet-map").then(function (map) {
-                        map.addLayer(marqueurs);
-                        //map.fitBounds(markers.getBounds());
-                    });
 
                 }
 
-            })
+                /*.catch(function (err) {
+                    console.log("Oups", err);
+                });*/
+            });
 
             console.log("papapara");
 
@@ -226,12 +264,37 @@
 
         }]);
 
-        app.controller("formCtrl", ["$scope","$http", function($scope,$http){
-            console.log("coucou");
+        app.controller("formCtrl", ["$scope", "$http", "$state", "$window", "reviewInfo", "formUp", function ($scope, $http, $state, $window, reviewInfo, formUp) {
 
-            $scope.test=function(){
-                console.log("testsetreusi");
+            $scope.selected = function () {
+                return formUp.getSite() != "inconnu";
             }
+
+            reviewInfo.then(function (response) {
+                $scope.review = response.data;
+            });
+
+            $scope.getFormulaire = function (user, form) {
+
+                var data = {
+                    siteId: formUp.getSite(),
+                    prenom: user.prenom,
+                    age: user.age,
+                    sexe: user.sexe,
+                    dateT: user.dateT,
+                    dateR: user.dateR,
+                    typeTest: user.resulTest,
+                    tpsAttente: user.attente,
+                    priseCharge: user.prisecharge,
+                    com: user.commentaire
+                };
+
+                $scope.review.push(data)
+                console.log($scope.review);
+                $http.post("/", $scope.review);
+                window.location.reload();
+            }
+
         }]);
 
         app.config(function ($stateProvider) {
