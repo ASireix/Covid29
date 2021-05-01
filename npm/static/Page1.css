@@ -27,10 +27,15 @@
     justify-content: space-around;
     align-items: center;
 	margin-top:5px;
+	margin-bottom:-30px;
+}
+
+#Soin input{
+	align-items:center;
 }
 
 #Infos{
-	margin-top:-20px;
+	margin-top:-5px;
 }
 
 #DateInput{
