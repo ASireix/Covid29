@@ -15,6 +15,11 @@ app.use('/angular-ar', express.static('node_modules/angular-aria'))
 app.use('/angular-sa', express.static('node_modules/angular-sanitize'))
 app.use('/angular-ro', express.static('node_modules/angular-ui-router/release'))
 
+//Chart js
+app.use('/angular-ch', express.static('node_modules/chart.js/dist'))
+app.use('/angular-ach', express.static('node_modules/angular-chart.js/dist'))
+
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/static/carte.html');
 });

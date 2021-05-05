@@ -21,6 +21,10 @@
     <script src="angular-ar/angular-aria.js"></script>
     <script src="angular-sa/angular-sanitize.js"></script>
     <script src="angular-ro/angular-ui-router.js"></script>
+    <!--Chart js-->
+    <script src="angular-ch/chart.min.js"></script>
+    <script src="angular-ach/angular-chart.min.js"></script>
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
 
@@ -104,6 +108,7 @@
                     <md-content class="md-padding">
                         <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentItem"
                             nav-bar-aria-label="navigation links">
+                            <!-- mv nav sref = lien vers une route définie dans app config en bas -->
                             <md-nav-item md-nav-sref="aide" name="aide">
                                 Info et aide
                             </md-nav-item>
@@ -132,9 +137,8 @@
 
 
     <script type="text/javascript">
-        var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet', 'ngSanitize', 'ui.router']);
 
-
+        var app = angular.module("angularApp", ['ngMaterial', 'ui-leaflet', 'ngSanitize', 'ui.router', 'chart.js']);
 
         app.factory('dataInfo', function ($http) {
             return $http.get('ressources/dataCenter.json');
@@ -187,8 +191,6 @@
             });
 
             $scope.dataCenter = [];
-
-
 
             $timeout(function () {
                 $state.go('aide')
@@ -302,6 +304,10 @@
 
         }]);
 
+        app.controller("statCtrl",["$scope", "$http", "reviewInfo", function($scope, $http, reviewInfo){
+
+        }]);
+
         app.config(function ($stateProvider) {
 
             var formuleState = {
@@ -314,7 +320,8 @@
             var statState = {
                 name: 'stat',
                 url: '/stat',
-                template: '<p>Hello statistique</p>'
+                template: 'nomdufichier.html',
+                controller: 'statCtrl'
             }
 
             var mentionState = {
