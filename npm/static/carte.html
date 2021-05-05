@@ -173,7 +173,7 @@
             });
         }
 
-        app.controller("ctrl", ["$scope", "$compile", "$state", "dataInfo", "leafletData", "formUp", function ($scope, $compile, $state, dataInfo, leafletData, formUp) {
+        app.controller("ctrl", ["$scope", "$compile", "$state", "dataInfo", "leafletData", "formUp", "$timeout", function ($scope, $compile, $state, dataInfo, leafletData, formUp, $timeout) {
 
             angular.extend($scope, {
                 center: {
@@ -188,10 +188,15 @@
 
             $scope.dataCenter = [];
 
-            $state.go('aide');
+
+
+            $timeout(function () {
+                $state.go('aide')
+            });
+
 
             $scope.currentItem = 'aide';
-            $scope.currentSelectedSite = null;
+
 
             $scope.handleClick = function (data) {
                 $scope.clicked();
@@ -222,7 +227,7 @@
                     iconUrl: 'ressources/icon2.png',
 
                 });
-                console.log("longjrnjgk "+response.data.length)
+                console.log("longjrnjgk " + response.data.length)
                 for (var i = 0; i < response.data.length; i++) {
 
                     //console.log(response.data[i].latitude);
@@ -231,7 +236,7 @@
                         var html = '<div>' +
                             '<h1>' + response.data[i].rs + '</h1>' +
                             '<h3>' + response.data[i].adresse + '</h3>' +
-                            '<md-button class="md-raised md-primary" ng-click="handleClick(' + i + ')"> Voter contre les juifs en 2021</md-button>' +
+                            '<md-button class="md-raised md-primary" ng-click="handleClick(' + i + ')">Sélectionner ce centre</md-button>' +
                             '</div>',
 
                             linkFunction = $compile(angular.element(html)),
@@ -316,6 +321,7 @@
                 name: 'mention',
                 url: '/mention',
                 templateUrl: 'ressources/mention.html'
+
             }
 
             var aideState = {
