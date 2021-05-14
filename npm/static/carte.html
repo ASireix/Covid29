@@ -24,15 +24,16 @@
     <!--Chart js-->
     <script src="angular-ch/chart.min.js"></script>
     <script src="angular-ach/angular-chart.min.js"></script>
-    
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link rel="icon" href="ressources/icon2.png"/>
 
 
 
 
     <style>
         body {
-            height: 100vh;
+            height: 100%;
         }
 
         html,
@@ -79,11 +80,12 @@
             margin-bottom: 20px;
         }
     </style>
-    <title>Grosse carte</title>
+    <title>Alerte Covid29</title>
 
 </head>
 
-<body ng-app="angularApp" ng-controller="ctrl" ng-style="{'background-image':'url(ressources/background.jpg)'}">
+<body ng-app="angularApp" ng-controller="ctrl"
+    ng-style="{'background-image':'url(ressources/background.jpg)','background-repeat': 'no-repeat', 'background-size':'3000px 3000px'}">
 
 
     <div layout="column">
@@ -162,21 +164,6 @@
 
         });
 
-        function addayerWithClustering(data) {
-
-            var geoJsonLayer = L.geoJson(data, {
-                onEachFeature: function (feature, layer) {
-                    layer.bindPopup(feature.properties.name);
-                }
-            });
-
-            markers.addLayer(geoJsonLayer);
-            leafletData.getMap().then(function (map) {
-                map.addLayer(markers);
-                //map.fitBounds(markers.getBounds());
-            });
-        }
-
         app.controller("ctrl", ["$scope", "$compile", "$state", "dataInfo", "leafletData", "formUp", "$timeout", function ($scope, $compile, $state, dataInfo, leafletData, formUp, $timeout) {
 
             angular.extend($scope, {
@@ -206,16 +193,21 @@
             }
 
             $scope.clicked = function (lieu) {
-                $state.go('formule');
-                $scope.currentItem = 'form';
-                console.log($scope.currentItem);
+                if ($state.current.name == 'aide' || $state.current.name == 'mention') {
+                    $state.go('formule');
+                    $scope.currentItem = 'form';
+                }else{
+                    $state.reload();
+                }
+
+                //console.log($scope.currentItem);
             }
 
             $scope.formUpdate = function (data) {
-                console.log($scope.dataCenter[data].rs);
+                //console.log($scope.dataCenter[data].rs);
                 formUp.setSite($scope.dataCenter[data].id);
                 $scope.currentSelectedSite = $scope.dataCenter[data].rs;
-                console.log(formUp.getSite());
+                //console.log(formUp.getSite());
             }
 
             dataInfo.then(function (response) {
@@ -229,7 +221,7 @@
                     iconUrl: 'ressources/icon2.png',
 
                 });
-                console.log("longjrnjgk " + response.data.length)
+                //console.log("longjrnjgk " + response.data.length)
                 for (var i = 0; i < response.data.length; i++) {
 
                     //console.log(response.data[i].latitude);
@@ -264,7 +256,7 @@
                 });*/
             });
 
-            console.log("papapara");
+            //console.log("papapara");
 
 
 
@@ -284,7 +276,7 @@
             $scope.getFormulaire = function (user, form) {
 
                 var data = {
-                    siteId: formUp.getSite(),
+                    siteId: [formUp.getSite()],
                     prenom: user.prenom,
                     age: user.age,
                     sexe: user.sexe,
@@ -297,16 +289,110 @@
                 };
 
                 $scope.review.push(data)
-                console.log($scope.review);
+                //console.log($scope.review);
                 $http.post("/", $scope.review);
                 window.location.reload();
             }
 
         }]);
 
-        app.controller("statCtrl",["$scope", "$http", "reviewInfo", function($scope, $http, reviewInfo){
+        app.controller("statCtrl", ["$scope", "$http", "reviewInfo", "formUp", function ($scope, $http, reviewInfo, formUp) {
 
+            $scope.selected = function () {
+                return formUp.getSite() != "inconnu";
+            }
+
+            reviewInfo.then(function (response) {
+                var bigData = response.data;
+                var nowSite = formUp.getSite();;
+                var actdata = [];
+                if (nowSite != "inconnu") {
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].siteId == nowSite) {
+                            actdata.push(response.data[i]);
+                        }
+                    }
+
+                }
+
+                //attdata
+                var tab1 = [[0], [0], [0], [0], [0]];
+                //qualdata
+                var tab2 = [[0], [0], [0], [0], [0]];
+                //timedata
+                var timedata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                //agedata
+                agedata = [0, 0, 0, 0, 0, 0];
+                //deldata
+                var deldata = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+                for (var i = 0; i < actdata.length; i++) {
+                    tab1[parseInt(actdata[i].tpsAttente) - 1][0] += 1;
+                    tab2[parseInt(actdata[i].priseCharge) - 1][0] += 1;
+
+                    timedata[(12 * (parseInt((actdata[i].dateT).substring(0, 4)) - 2020)) + (parseInt((actdata[i].dateT).substring(5, 7))) - 1] += 1;
+
+                    delai = parseInt((actdata[i].dateR).substring(8, 10)) - parseInt((actdata[i].dateT).substring(8, 10));
+                    console.log(delai);
+                    if (delai < 1) {
+                        month = (parseInt((actdata[i].dateT).substring(5, 7)))
+                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                            delai += 31;
+                        } else if (month == 2) {
+                            if (parseInt((actdata[i].dateR).substring(8, 10)) == 2020) {
+                                delai += 29;
+                            } else {
+                                delai += 28;
+                            }
+                        } else {
+                            delai += 30;
+                        }
+                    }
+                    if (delai >= 30) {
+                        delai = 30;
+                    }
+                    console.log(delai);
+                    deldata[delai - 1] += 1;
+
+                    if (parseInt(actdata[i].age) < 18) {
+                        agedata[0] += 1;
+                    } else if (parseInt(actdata[i].age) < 25) {
+                        agedata[1] += 1;
+                    } else if (parseInt(actdata[i].age) < 35) {
+                        agedata[2] += 1;
+                    } else if (parseInt(actdata[i].age) < 45) {
+                        agedata[3] += 1;
+                    } else if (parseInt(actdata[i].age) < 60) {
+                        agedata[4] += 1;
+                    } else {
+                        agedata[5] += 1;
+                    }
+                }
+                console.log(deldata);
+                attdata = []
+                for (var i = 0; i < 5; i++) {
+                    attdata.push(tab1[i][0]);
+                }
+
+                qualdata = [];
+                for (var i = 0; i < 5; i++) {
+                    qualdata.push(tab2[i][0]);
+                }
+
+                $scope.attdata = attdata;
+                $scope.qualdata = qualdata;
+                $scope.agedata = agedata;
+                $scope.timedata = timedata;
+                $scope.deldata = deldata;
+            });
+
+            $scope.labels = ['Janvier 2020', 'Fevrier 2020', 'Mars 2020', 'Avril 2020', 'Mai 2020', 'Juin 2020', 'Juillet 2020', 'Août 2020', 'Septembre 2020', 'Octobre 2020', 'Novembre 2020', 'Decembre 2020', 'Janvier 2021', 'Fevrier 2021', 'Mars 2021', 'Avril 2021', 'Mai 2021'];
+            $scope.series = ['Series A', 'Series B'];
+            $scope.labelage = ['Moins de 18 ans', 'Entre 18 et 25 ans', 'Entre 25 et 35 ans', 'Entre 35 et 45 ans', 'Entre 45 et 60 ans', '60+'];
+            $scope.labelrating = ['1', '2', '3', '4', '5'];
+            $scope.labeldays = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '25', '30+']
         }]);
+
 
         app.config(function ($stateProvider) {
 
@@ -320,8 +406,9 @@
             var statState = {
                 name: 'stat',
                 url: '/stat',
-                template: 'nomdufichier.html',
-                controller: 'statCtrl'
+                templateUrl: 'ressources/stats.html',
+                controller: 'statCtrl',
+                reload: true
             }
 
             var mentionState = {
@@ -352,3 +439,44 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Bonsoir paris, singe élu président 2021 -->

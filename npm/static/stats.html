@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="angular-md/angular-material.css">
+    <script src="angular-ch/chart.min.js"></script>
+    <script src="angular-ach/angular-chart.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="ressources/Page1.css">
+</head>
+
+<body>
+    <h1>
+        {{currentSelectedSite}}
+    </h1>
+    <h2>
+        Nombre d'avis envoyés:
+        <div>
+            <canvas id="line" class="chart chart-line" chart-data="timedata" chart-labels="labels" chart-series="series"
+                chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
+            </canvas>
+        </div>
+        Temps d'attente:
+        <div>
+            <canvas id="bar2" class="chart chart-bar" chart-data="attdata" chart-labels="labelrating">
+                chart-series="series"
+            </canvas>
+        </div>
+        Qualitée du service:
+        <div>
+            <canvas id="bar3" class="chart chart-bar" chart-data="qualdata" chart-labels="labelrating">
+                chart-series="series"
+            </canvas>
+        </div>
+        Délais de retour
+        <div>
+            <canvas id="line2" class="chart chart-line" chart-data="deldata" chart-labels="labeldays" chart-series="series"
+                chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick">
+            </canvas>
+        </div>
+        Age des Personnes ayant répondu au formulaire:
+        <div>
+            <canvas id="doughnut" class="chart chart-doughnut" chart-data="agedata" chart-labels="labelage"
+                chart-options="options">
+                chart-series="series"
+            </canvas>
+        </div>
+
+    </h2>
+</body>
+
+</html>
